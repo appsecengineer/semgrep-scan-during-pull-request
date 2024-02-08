@@ -1,1 +1,1 @@
-GitHub Actions NodeJS Scan and publish results to DefectDojo
+semgrep scan during pull request

@@ -15,21 +15,24 @@ headers = {
     'Authorization': f'token {os.environ["GITHUB_TOKEN"]}',
     'Accept': 'application/vnd.github.v3+json',
 }
-# Set up the headers for the GitHub API request
-headers = {
-    'Authorization': f'token {os.environ["GITHUB_TOKEN"]}',
-    'Accept': 'application/vnd.github.v3+json',
-}
+# Repository URL
+repo_url = "https://api.github.com/repos/{}/{}/pulls/{}/commits".format(owner,repo,pr_number)
+repo_url_comments = "https://api.github.com/repos/{}/{}/pulls/{}/comments".format(owner,repo,pr_number)
+
 # Make the API request
 response = requests.get(
-    f'<https://api.github.com/repos/{owner}/{repo}/pulls/{pr_number}/commits>',
+    repo_url,
     headers=headers,
 )
 # Parse the response JSON
 commits = response.json()
+print(repo_url)
+print(commits)
+print(response.status_code)
 # The latest commit is the first item in the list
 latest_commit = commits[0]['sha']
 # Iterate over the findings and post a comment for each one
+print(findings['results'])
 for finding in findings['results']:
     body = f'''
 ## <img src="<https://semgrep.dev/docs/img/semgrep.svg>" width="30" height="30"> Semgrep finding
@@ -48,7 +51,7 @@ for finding in findings['results']:
         'line': finding['start']['line'],
     }
     response = requests.post(
-        f'<https://api.github.com/repos/{owner}/{repo}/pulls/{pr_number}/comments>',
+        repo_url_comments,
         headers=headers,
         json=payload,
     )

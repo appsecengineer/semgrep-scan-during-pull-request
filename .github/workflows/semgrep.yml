@@ -19,7 +19,7 @@ jobs:
          env
          semgrep --config p/r2c --baseline-commit HEAD~ --json > findings.json
      - name: Set up Python environment
-       uses: actions/setup-python@v2
+       uses: actions/setup-python@v5
        with:
          python-version: '3.x'
      
